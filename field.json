@@ -1,0 +1,13 @@
+{
+	"leaderRawInfo": "[신청자] 이름/카카오톡ID/위한ID/나이",
+	"leaderFBLink": "[신청자] 페이스북 계정 링크",
+	"mem1RawInfo": "[팀원1] 이름/카카오톡ID/위한ID/나이",
+	"mem1FBLink": "[팀원1] 페이스북 계정 링크",
+	"mem2RawInfo": "[팀원2] 이름/카카오톡ID/위한ID/나이",
+	"mem2FBLink": "[팀원2] 페이스북 계정 링크",
+	"teamGender": "성별",
+	"type": "원하는 미팅 형태",
+	"preferSchool": "상대방 학교",
+	"preferAge": "상대방 나이대",
+	"acceptance": "위 안내 사항을 모두 숙지했으며, 동의합니다."
+}
