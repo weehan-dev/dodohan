@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+/**
+ * DB 연결한 부분입니다. 신경 안쓰셔도 됩니다.
+ */
+
 module.exports = mongodbUrl => {
 	function connect(url) {
 		mongoose.connect(
