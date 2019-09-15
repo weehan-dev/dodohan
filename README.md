@@ -22,9 +22,18 @@
 
 ## 프로젝트 구조
 
+> 폴더 구조나 설정이 추가되거나 수정되면 여기에도 적어주세요
+
 - csv: csv 파일을 저장 (개인정보가 올라갈 위험이 있어서 .gitignore 했음)
+  - others: 다른 대학교 신청자 (안에 csv파일이 있음)
+  - weehan: 위한 신청자 (안에 csv파일이 있음)
+- config: .env 설정을 한 곳에서만 호출함
 - models: 스키마 하나를 사용한 로직들
-- schema: 스키마를 정의
-- field.json: csv 필드
+  - schema: 스키마를 정의
+- services: 주요 로직들
+- loaders: 앱 시작 하면서 불러와야 하는 것들
+- utils: 로직 중에 사용되는 유틸들
+- weehanField.json: 위한 신청자 csv 필드
+- othersField.json: 다른 대학 신청자 csv 필드
 - index.js: 진입점
-- injectDb.js: csv를 DB에 저장
+- app.js: 로직이 시작되는 부분

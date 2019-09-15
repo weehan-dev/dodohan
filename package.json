@@ -12,5 +12,8 @@
 	},
 	"scripts": {
 		"inject": "node"
+	},
+	"devDependencies": {
+		"@types/mongoose": "^5.5.17"
 	}
 }
