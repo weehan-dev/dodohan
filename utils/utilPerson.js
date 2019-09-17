@@ -1,52 +1,41 @@
-const dataParser = data =>
-	data
-		.split(" ")
-		.slice(1)
-		.split("/");
+const dataParser = data => data.split("/");
 
 const makePerson = rawData => {
 	const {
 		rawInfo,
 		rawContact,
-		gender,
-		fbLink: facebookLink,
+		gender: rawGender,
+		fbLink,
 		isLeader,
 		school
 	} = rawData;
+	const gender = rawGender === "남자" ? "male" : "female";
 	const info = dataParser(rawInfo);
-	let name, weehanId, age;
-	const [kakaoId, phone, email] = dataParser(rawContact);
+	let name, weehanId, rawAge;
+	const [kakaoId, phoneNumber, email] = dataParser(rawContact);
 	if (info.length === 3) {
-		[name, weehanId, age] = info;
+		[name, weehanId, rawAge] = info;
 	} else {
-		[name, age] = info;
+		[name, rawAge] = info;
 	}
+	const facebookLink = fbLink || null;
 
 	const ret = {
 		school,
 		name,
 		weehanId,
-		age,
+		age: parseInt(rawAge),
 		kakaoId,
-		phone,
+		phoneNumber,
 		email,
 		gender,
 		facebookLink,
 		isLeader
 	};
-
 	return ret;
 };
 
-exports.makePeople = async (...rawPeopleData) => {
-	const ret = Promise.all(
-		rawPeopleData.map(
-			rawPersonData =>
-				new Promise((resolve, reject) => {
-					return resolve(makePerson(rawPersonData));
-				})
-		)
-	);
-
+exports.makePeople = (...rawPeopleData) => {
+	const ret = rawPeopleData.map(rawPersonData => makePerson(rawPersonData));
 	return ret;
 };

@@ -2,17 +2,16 @@ const Participant = require("./schema/participants.schema");
 
 module.exports = {
 	makeParticipant: async person => {
-		const participant = await Participant.create(person).lean();
+		const participant = await Participant.create(person);
 		return participant;
 	},
 	makeBulkInsert: async people => {
-		const ret = await Participant.bulkWrite([
+		let ret = await Participant.bulkWrite(
 			people.map(person => ({
 				insertOne: { document: person }
 			}))
-		]);
+		);
 
-		console.log(ret);
 		return { ret, result: true };
 	},
 	checkDuplicated: async person => {
@@ -21,8 +20,9 @@ module.exports = {
 			kakaoId,
 			phoneNumber,
 			email
-		}).lean();
-		if (existUser) throw new Error("DUPLICATED");
+		});
+
+		if (existUser) throw new Error("DUPLICATED_USER");
 		return true;
 	}
 };

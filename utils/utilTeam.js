@@ -45,12 +45,13 @@ const createBaseMember = (form, school) => {
 		mem1RawData,
 		mem2RawData
 	);
-
-	return {
+	const ret = {
 		leader,
 		mem1,
 		mem2
 	};
+
+	return ret;
 };
 
 exports.createBaseMember = createBaseMember;
