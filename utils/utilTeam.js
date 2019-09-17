@@ -38,7 +38,7 @@ const trim = (data, school) => {
 	return [leaderRawData, memberOneRawData, memberTwoRawData];
 };
 
-export const createBaseMember = (form, school) => {
+const createBaseMember = (form, school) => {
 	const [leaderRawData, mem1RawData, mem2RawData] = trim(form, school);
 	const [leader, mem1, mem2] = makePeople(
 		leaderRawData,
@@ -52,3 +52,5 @@ export const createBaseMember = (form, school) => {
 		mem2
 	};
 };
+
+exports.createBaseMember = createBaseMember;

@@ -1,5 +1,5 @@
 const modParticipant = require("../models/modParticipant");
-import { createBaseMember } from "../utils/utilTeam";
+const { createBaseMember } = require("../utils/utilTeam");
 const { checkDuplicated, makeBulkInsert } = modParticipant;
 
 module.exports = {

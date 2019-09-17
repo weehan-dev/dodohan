@@ -38,7 +38,7 @@ const makePerson = rawData => {
 	return ret;
 };
 
-export const makePeople = async (...rawPeopleData) => {
+exports.makePeople = async (...rawPeopleData) => {
 	const ret = Promise.all(
 		rawPeopleData.map(
 			rawPersonData =>
