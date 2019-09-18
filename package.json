@@ -1,14 +1,20 @@
 {
-  "name": "dodohan",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "changhoi <0417kch@naver.com>",
-  "license": "MIT",
-  "dependencies": {
-    "csv-parser": "^2.3.0",
-    "csvtojson": "^2.0.10",
-    "dotenv": "^8.0.0",
-    "mongoose": "^5.6.9",
-    "nodemailer": "^6.3.0"
-  }
+	"name": "dodohan",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "changhoi <0417kch@naver.com>",
+	"license": "MIT",
+	"dependencies": {
+		"csv-parser": "^2.3.0",
+		"csvtojson": "^2.0.10",
+		"dotenv": "^8.0.0",
+		"mongoose": "^5.6.9",
+     "nodemailer": "^6.3.0",
+	},
+	"scripts": {
+		"inject": "node"
+	},
+	"devDependencies": {
+		"@types/mongoose": "^5.5.17"
+	}
 }
