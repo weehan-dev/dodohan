@@ -5,7 +5,6 @@ const connect = async dbUrl => {
 		useNewUrlParser: true,
 		useCreateIndex: false
 	});
-	console.log("MongoDB 연결 성공");
 };
 
 module.exports = async dbUrl => {
