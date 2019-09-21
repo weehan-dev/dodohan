@@ -30,7 +30,8 @@ const makePerson = rawData => {
 		email,
 		gender,
 		facebookLink,
-		isLeader
+		isLeader,
+		point: 0
 	};
 	return ret;
 };
