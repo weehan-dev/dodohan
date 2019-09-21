@@ -20,7 +20,7 @@ const modWeehanFactory = async () => {
 		},
 
 		getUserByIdWithSanctions: async userId => {
-			const ret;
+			let ret = {};
 			const userInfoWithLeftJoin = await Weehan.query(
 				`
 					select u.user_id, u.member_srl, bu.warning_title

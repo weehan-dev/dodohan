@@ -4,12 +4,12 @@ const serTeam = require("./services/serTeam");
 
 class App {
 	constructor() {
-		if (app.instance) return app.instance;
-		app.instance = this;
-		return app.instance;
+		if (App.instance) return App.instance;
+		App.instance = this;
+		return App.instance;
 	}
 
-	injectStart = async () => {
+	async injectStart() {
 		// 여기에 앱 동작을 정의 하시면 됩니다.
 		console.log("앱 만들어지는 중...");
 
@@ -53,7 +53,7 @@ class App {
 		};
 
 		await inject();
-	};
+	}
 }
 const app = new App();
 

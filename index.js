@@ -5,7 +5,7 @@ const main = async (loaders, app) => {
 		await loaders();
 		await app.injectStart();
 	} catch (e) {
-		console.error(e);
+		console.error(e.message);
 		console.log("앱이 비정상 종료 되었습니다.");
 	}
 };
