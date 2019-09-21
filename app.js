@@ -22,37 +22,42 @@ class App {
 		let whTeamsNum = 0;
 		let otTeamsNum = 0;
 		const inject = async () => {
-			whParsedCsv.map(async whRawTeamForm => {
-				const { result, ret } = await serParticipant.injectWeehanMembers(
-					whRawTeamForm
-				);
-				if (!result) {
-					console.log("위한 중복 참여 팀:", ++whDuplicatedNum);
+			await Promise.all(
+				whParsedCsv.map(async whRawTeamForm => {
+					const { result, ret } = await serParticipant.injectWeehanMembers(
+						whRawTeamForm
+					);
+					if (!result) {
+						console.log("위한 중복 참여 팀:", ++whDuplicatedNum);
+						return;
+					}
+
+					await serTeam.injectTeam(ret, whRawTeamForm);
+
+					console.log(`위한 팀 추가: ${++whTeamsNum}`);
 					return;
-				}
+				})
+			);
 
-				await serTeam.injectTeam(ret, whRawTeamForm);
+			await Promise.all(
+				otParsedCsv.map(async otRawTeamForm => {
+					const { result, ret } = await serParticipant.injectOthersMembers(
+						otRawTeamForm
+					);
+					if (!result) {
+						console.log("타대생 중복 참여 팀:", ++otDuplicatedNum);
+						return;
+					}
 
-				console.log(`위한 팀 추가: ${++whTeamsNum}`);
-				return;
-			});
-
-			otParsedCsv.map(async otRawTeamForm => {
-				const { result, ret } = await serParticipant.injectOthersMembers(
-					otRawTeamForm
-				);
-				if (!result) {
-					console.log("타대생 중복 참여 팀:", ++otDuplicatedNum);
+					await serTeam.injectTeam(ret, otRawTeamForm);
+					console.log(`타대생 팀 추가: ${++otTeamsNum}`);
 					return;
-				}
-
-				await serTeam.injectTeam(ret, otRawTeamForm);
-				console.log(`타대생 팀 추가: ${++otTeamsNum}`);
-				return;
-			});
+				})
+			);
 		};
 
 		await inject();
+		console.log("완료");
 	}
 }
 const app = new App();
