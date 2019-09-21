@@ -41,6 +41,18 @@ module.exports = {
 		};
 
 		const team = await modTeam.makeTeam(teamObj);
+
+		await Promise.all(
+			users.map(
+				user =>
+					new Promise(resolve => {
+						user.hasTeam = true;
+						user.team = team._id;
+						user.save().then(() => resolve());
+					})
+			)
+		);
+
 		return team;
 	}
 };

@@ -3,7 +3,7 @@ const modWeehanFactory = require("../models/modWeehan");
 module.exports = {
 	injectWeehanPoint: async user => {
 		const modWeehan = await modWeehanFactory();
-		const result = modWeehan.getUserByIdWithSanctions(user.weehanId);
+		const result = await modWeehan.getUserByIdWithSanctions(user.weehanId);
 		if (result.find && result.userInfo.warning_title) {
 			console.log(result.userInfo.warning_title);
 			throw new Error("BLACKUSER");

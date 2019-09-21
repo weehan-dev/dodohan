@@ -10,7 +10,6 @@ module.exports = {
 			await Promise.all(
 				users.map(user => modParticipant.checkDuplicated(user))
 			);
-
 			await Promise.all(
 				users.map(user => serMemberPoint.injectWeehanPoint(user))
 			);
