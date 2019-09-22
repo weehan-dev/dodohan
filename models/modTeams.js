@@ -28,10 +28,22 @@ module.exports = {
 	},
 
 	getMatchedTeamList: async () => {
-		const teamList = await Team.find({ isMatched: true }).populate(
-			"leader"
-		);
+		const teamList = await Team.find({ isMatched: true })
+			.populate("leader", ["phoneNumber", "email"])
+			.populate({
+				path: "partnerTeam",
+				select: ["leader"],
+				populate: { path: "leader", select: "kakaoId" }
+			});
 
+		return teamList;
+	},
+
+	getUnmatchedTeamList: async () => {
+		const teamList = await Team.find({ isMatched: false }).populate("leader", [
+			"email",
+			"phoneNumber"
+		]);
 		return teamList;
 	}
 };

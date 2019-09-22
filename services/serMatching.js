@@ -117,15 +117,9 @@ module.exports = {
 				}
 			} else {
 				if (womanPreferList.includes(man)) {
-					if (
-						womanPreferList.indexOf(currMan) >
-						womanPreferList.indexOf(man)
-					) {
+					if (womanPreferList.indexOf(currMan) > womanPreferList.indexOf(man)) {
 						engaged.set(man, woman);
-						var currManPreferList = findCandidates(
-							malePrefer,
-							currMan
-						);
+						var currManPreferList = findCandidates(malePrefer, currMan);
 						if (currManPreferList) {
 							notMatchedMale.push(currMan);
 						}
@@ -143,7 +137,6 @@ module.exports = {
 					}
 				}
 			}
-			// console.log("========");
 		}
 		return engaged;
 	},
