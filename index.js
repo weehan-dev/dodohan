@@ -3,7 +3,8 @@ const app = require("./app");
 const main = async (loaders, app) => {
 	try {
 		await loaders();
-		await app.injectStart();
+		// await app.injectStart();
+		await app.mailingStart();
 		process.exit();
 	} catch (e) {
 		console.error(e.message);
