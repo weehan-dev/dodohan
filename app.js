@@ -3,6 +3,8 @@ const serParticipant = require("./services/serParticipant");
 const serTeam = require("./services/serTeam");
 const serMatching = require("./services/serMatching");
 const serMail = require("./services/serMail");
+//
+const modTeam = require("../models/modTeams");
 
 class App {
 	constructor() {
@@ -65,7 +67,12 @@ class App {
 	}
 
 	async matching() {
-		await serMatching.test();
+		const [male, female] = await serMatching.makeList();
+
+		const malePrefer = await serMatching.setCandidate(male, female);
+		const femalePrefer = await serMatching.setCandidate(female, male);
+
+		const matchingResult = await match(malePrefer, femalePrefer);
 	}
 
 	async mailingStart() {

@@ -1,12 +1,11 @@
 const modTeam = require("../models/modTeams");
 
 module.exports = {
-	//Point 값을 기준으로 오름차순 정렬
-	sortByPriority: arr => {
-		arr.sort((a, b) => {
-			return a["point"] - b["point"];
-		});
-		return arr;
+	//남녀 리스트 가져오기
+	makeList: async () => {
+		const maleList = modTeam.makeTeamforMathcing("male");
+		const femaleList = modTeam.makeTeamforMathcing("female");
+		return [maleList, femaleList];
 	},
 
 	//선호 나이대에 맞는 매칭 후보 맵핑
@@ -15,7 +14,7 @@ module.exports = {
 
 		for (var i = 0; i < x.length; i++) {
 			var person = {};
-			var kakaoId = x[i]["kakaoId"];
+			var id = x[i]["_id"];
 			var candidates = [];
 
 			for (var j = 0; j < y.length; j++) {
@@ -114,10 +113,6 @@ module.exports = {
 		await modTeam.makeTeamforMathcing("male");
 	}
 };
-
-// sortByPriority(Male);
-// sortByPriority(Female);
-
 // const malePrefer = setCandidate(Male, Female);
 // const femalePrefer = setCandidate(Female, Male);
 
