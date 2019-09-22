@@ -8,44 +8,22 @@ module.exports = {
 	},
 
 	makeTeamforMathcing: async gender => {
-		const getLeaderObj = await Team.aggregate([
+		const getTeamObj = await Team.find(
 			{
-				$lookup: {
-					from: "participants",
-					localField: "leader",
-					foreignField: "_id",
-					as: "leader"
-				}
-			}
-		]);
-		const getMembersObj = await Team.aggregate([
-			{ $unwind: "$members" },
-			{
-				$lookup: {
-					from: "participants",
-					localField: "members",
-					foreignField: "_id",
-					as: "getMembers"
-				}
+				matchingType: 3,
+				gender: gender
 			},
-			{ $unwind: "$getMembers" },
-			{
-				$group: {
-					_id: "$_id",
-					getMembers: { $push: "$getMembers" }
-				}
-			}
-		]);
-
-		const getTeam = await Team.find(
-			{ matchingType: 3, gender },
 			{
 				preferAge: true,
 				leader: true,
 				members: true,
 				teamPoint: true
 			}
-		).sort({ teamPoint: 1 });
+		)
+			.populate("leader", "age")
+			.populate("members", "age")
+			.sort({ teamPoint: 1 });
+		return getTeamObj;
 	},
 
 	getMatchedTeamList: async () => {
@@ -69,11 +47,14 @@ module.exports = {
 	}
 };
 
-// 내가 원하는 데이터 형식
+/*
+데이터 형식
+{ preferAge: [ 24, 25, 26, 27 ],
+  members:
+   [ { _id: 5d8722912f114d1948208ca7, age: 24 },
+     { _id: 5d8722912f114d1948208ca8, age: 20 } ],
+  _id: 5d8722912f114d1948208cac,
+  teamPoint: 0,
+  leader: { _id: 5d8722912f114d1948208ca6, age: 24 } }
 
-// { _id: 5d8722922f114d1948208cd8,
-// 	preferAge: [ 22, 23 ],
-// 	members: [ [Object], [Ojbect] ]
-// 	gender: 'male',
-// 	teamPoint: 0,
-// 	leader: [ [Ojbect] ] }
+*/
