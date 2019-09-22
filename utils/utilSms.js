@@ -7,14 +7,13 @@ const matchSuccessSms = async (num, content) => {
 	const apiSecret = configApi.SMS_INFO.SECRET;
 	config.init({ apiKey, apiSecret });
 
-	async function send(params = {}) {
+	const send = async (params = {}) => {
 		try {
 			const response = await Group.sendSimpleMessage(params);
-			console.log(response);
 		} catch (e) {
 			console.log(e);
 		}
-	}
+	};
 
 	const params = {
 		text: `두근두근 라치오스 매칭에 성공하였습니다! 상대팀 대표의 카카오톡 아이디는 ${content}입니다`,
@@ -22,7 +21,6 @@ const matchSuccessSms = async (num, content) => {
 		to: num, // 수신번호 (받는이)
 		from: configApi.SMS_INFO.FROM // 발신번호 (보내는이)
 	};
-	console.log(params);
 	await send(params);
 };
 
