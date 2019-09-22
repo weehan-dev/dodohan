@@ -77,7 +77,8 @@ DB에서 객체 가져오기 but 오류나서 하지 못함
 //     kakaoId: "f",
 //     point: 20,
 //     prefer_age: [22, 23, 24, 25],
-//     age: [25]
+//     members: [{age: 25, key: dsadasdad00}, {}]
+//     leader: {obkey, age}
 //   }
 // ];
 
@@ -158,9 +159,15 @@ module.exports = {
 				}
 			} else {
 				if (womanPreferList.includes(man)) {
-					if (womanPreferList.indexOf(currMan) > womanPreferList.indexOf(man)) {
+					if (
+						womanPreferList.indexOf(currMan) >
+						womanPreferList.indexOf(man)
+					) {
 						engaged.set(man, woman);
-						var currManPreferList = findCandidates(malePrefer, currMan);
+						var currManPreferList = findCandidates(
+							malePrefer,
+							currMan
+						);
 						if (currManPreferList) {
 							notMatchedMale.push(currMan);
 						}
