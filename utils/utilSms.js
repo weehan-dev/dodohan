@@ -1,8 +1,8 @@
-const request = require('request');
 const {config, Group} = require('coolsms-sdk-v4');
 const configApi = require('../config/index');
 
-function smsFunc(num, content) {
+
+const smsFunc = async(num, content)=> {
 
 // 인증을 위해 발급받은 본인의 API Key를 사용합니다.
     const apiKey = configApi.SMS_INFO.KEY;
@@ -33,8 +33,8 @@ function smsFunc(num, content) {
         from: '01091853702' // 발신번호 (보내는이)
     };
     console.log(params);
-    send(params)
-}
+    await send(params)
+};
 
 
 

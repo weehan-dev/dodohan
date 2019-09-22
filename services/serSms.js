@@ -7,6 +7,6 @@ module.exports = {
         await Promise.all(teamList.map(team =>
             utilSms.smsSend(team)
         ));
-        await console.log('메세지 완료');
+        console.log('메세지 완료');
     }
 };
