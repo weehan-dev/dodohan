@@ -46,16 +46,24 @@ module.exports = {
 				teamPoint: true
 			}
 		).sort({ teamPoint: 1 });
-
-		//console.log(getTeam[0]["members"][0]);
-		console.log(getMembersObj);
-		//return setTeam;
 	},
-	getMatchedTeamList: async () => {
-		const teamList = await Team.find({ isMatched: true }).populate(
-			"leader"
-		);
 
+	getMatchedTeamList: async () => {
+		const teamList = await Team.find({ isMatched: true })
+			.populate("leader")
+			.populate({
+				path: "partnerTeam",
+				populate: { path: "leader", select: "kakaoId" }
+			});
+
+		return teamList;
+	},
+
+	getUnmatchedTeamList: async () => {
+		const teamList = await Team.find({ isMatched: false }).populate("leader", [
+			"email",
+			"phoneNumber"
+		]);
 		return teamList;
 	}
 };
