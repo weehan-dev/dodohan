@@ -18,5 +18,12 @@ module.exports = {
 		DATABASE: process.env.TUNNEL_DB_NAME,
 		PORT: process.env.TUNNEL_DB_PORT,
 		CONNECTION: process.env.TUNNEL_DB_CONNECTION
+	},
+	EMAIL_INFO: {
+		ID: process.env.GMAIL_ID,
+		PW: process.env.GMAIL_PW,
+		PROAL: process.env.NAVER_PROAL,
+        TEST1: process.env.NAVER_PROAL,
+        TEST2: process.env.TEST_EMAIL
 	}
 };

@@ -1,7 +1,7 @@
 const utilCsv = require("./utils/utilCsv");
 const serParticipant = require("./services/serParticipant");
 const serTeam = require("./services/serTeam");
-
+const serMail = require("./services/serMail");
 class App {
 	constructor() {
 		if (App.instance) return App.instance;
@@ -58,6 +58,10 @@ class App {
 
 		await inject();
 		console.log("완료");
+	}
+
+	async mailingStart() {
+		await serMail.test()
 	}
 }
 const app = new App();
