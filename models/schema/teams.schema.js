@@ -21,7 +21,8 @@ const teamSchema = new Schema(
 		isMatched: { type: Boolean, default: false }, // 매칭 되었나?
 		partnerTeam: { type: ObjectId, ref: "Team" }, // 파트너 팀 (매칭 된 경우만)
 		avgAge: { type: Number, required: true }, // 평균 나이대 (상대방이 검색 시에 나타남)
-		teamPoint: { type: Number, required: true } // 좋아요 숫자 + 팀에 인증된 위한 유저 수 (팀원들의 포인트를 모두 더함)
+		teamPoint: { type: Number, required: true }, // 좋아요 숫자 + 팀에 인증된 위한 유저 수 (팀원들의 포인트를 모두 더함)
+		ages: [{ type: Number }]
 	},
 	{
 		timestamps: true

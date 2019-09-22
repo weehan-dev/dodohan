@@ -14,6 +14,7 @@ module.exports = {
 				gender: gender
 			},
 			{
+				ages: true,
 				preferAge: true,
 				leader: true,
 				members: true,

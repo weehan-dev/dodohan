@@ -12,12 +12,15 @@ module.exports = {
 			? rawPreferAge.split(";").map(data => parseInt(data))
 			: [21, 22, 23, 24, 25, 26, 27, 28, 29];
 		const matchingType = 3;
-
+		const ages = [];
 		const sumData = users
-			.map(user => ({
-				point: user.point,
-				age: user.age
-			}))
+			.map(user => {
+				ages.push(user.age);
+				return {
+					point: user.point,
+					age: user.age
+				};
+			})
 			.reduce((prev, curr) => ({
 				point: prev.point + curr.point,
 				age: prev.age + curr.age
@@ -26,10 +29,13 @@ module.exports = {
 		// TODO: 정수인지 체크 // 완료
 		const avgAge = Math.round(sumData.age / users.length);
 		const teamPoint = sumData.point;
-		const members = users.filter(user => !user.isLeader).map(user => user._id);
+		const members = users
+			.filter(user => !user.isLeader)
+			.map(user => user._id);
 		const leader = users.filter(user => user.isLeader)[0]._id;
 
 		const teamObj = {
+			ages,
 			school,
 			gender,
 			preferAge,
