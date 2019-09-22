@@ -25,5 +25,11 @@ module.exports = {
 		PROAL: process.env.NAVER_PROAL,
         TEST1: process.env.NAVER_PROAL,
         TEST2: process.env.TEST_EMAIL
+	},
+	SMS_INFO:{
+		// KEY: process.env.SOLAPI_API_KEY,
+		// SECRET: process.env.SOLAPY_API_SECRET
+		KEY: 'NCSYYSLYN6BKLUXL',
+		SECRET: '94DKGGNGPIMWQQMJFQATURUUQRMROXCV'
 	}
 };

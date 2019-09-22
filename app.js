@@ -3,6 +3,7 @@ const serParticipant = require("./services/serParticipant");
 const serTeam = require("./services/serTeam");
 const serMatching = require("./services/serMatching");
 const serMail = require("./services/serMail");
+const serSms = require("./services/serSms");
 
 class App {
 	constructor() {
@@ -70,6 +71,9 @@ class App {
 
 	async mailingStart() {
 		await serMail.test();
+	}
+	async messageStart(){
+		await serSms.test()
 	}
 }
 const app = new App();
