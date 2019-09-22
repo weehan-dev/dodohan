@@ -6,6 +6,7 @@ const main = async (loaders, app) => {
 		await app.injectStart();
 		// await app.matching();
 		await app.mailingStart();
+		await app.messageStart();
 		process.exit();
 	} catch (e) {
 		console.error(e.message);
