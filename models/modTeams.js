@@ -50,6 +50,13 @@ module.exports = {
 		//console.log(getTeam[0]["members"][0]);
 		console.log(getMembersObj);
 		//return setTeam;
+	},
+	getMatchedTeamList: async () => {
+		const teamList = await Team.find({ isMatched: true }).populate(
+			"leader"
+		);
+
+		return teamList;
 	}
 };
 
