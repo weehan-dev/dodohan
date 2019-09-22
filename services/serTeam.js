@@ -10,7 +10,7 @@ module.exports = {
 
 		const preferAge = !!rawPreferAge
 			? rawPreferAge.split(";").map(data => parseInt(data))
-			: null;
+			: [21, 22, 23, 24, 25, 26, 27, 28, 29];
 		const matchingType = 3;
 
 		const sumData = users
@@ -23,7 +23,7 @@ module.exports = {
 				age: prev.age + curr.age
 			}));
 
-		// TODO: 정수인지 체크
+		// TODO: 정수인지 체크 // 완료
 		const avgAge = Math.round(sumData.age / users.length);
 		const teamPoint = sumData.point;
 		const members = users.filter(user => !user.isLeader).map(user => user._id);

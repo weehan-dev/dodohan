@@ -28,4 +28,5 @@ const teamSchema = new Schema(
 	}
 );
 
-module.exports = model("Team", teamSchema);
+const db = model("Team", teamSchema);
+module.exports = db;

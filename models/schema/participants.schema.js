@@ -27,5 +27,6 @@ const participantSchema = new Schema({
 	hasTeam: { type: Boolean, default: false }, // 팀이 있는지? 1:1도 확장하더라도 무조건 팀으로 찾게 만들면 되서 다 팀이 잇는 걸로 만면 될 듯
 	point: { type: Number, required: true, default: 0 } // 한대전, 위한 좋아요, 위한 멤버인지에 따른 포인트
 });
+
 const db = model("Participant", participantSchema);
 module.exports = db;
