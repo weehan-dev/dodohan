@@ -26,10 +26,9 @@ class App {
 		const inject = async () => {
 			await Promise.all(
 				whParsedCsv.map(async whRawTeamForm => {
-					const {
-						result,
-						ret
-					} = await serParticipant.injectWeehanMembers(whRawTeamForm);
+					const { result, ret } = await serParticipant.injectWeehanMembers(
+						whRawTeamForm
+					);
 					if (!result) {
 						console.log("위한 중복 참여 팀:", ++whDuplicatedNum);
 						return;
@@ -44,10 +43,9 @@ class App {
 
 			await Promise.all(
 				otParsedCsv.map(async otRawTeamForm => {
-					const {
-						result,
-						ret
-					} = await serParticipant.injectOthersMembers(otRawTeamForm);
+					const { result, ret } = await serParticipant.injectOthersMembers(
+						otRawTeamForm
+					);
 					if (!result) {
 						console.log("타대생 중복 참여 팀:", ++otDuplicatedNum);
 						return;
@@ -69,7 +67,8 @@ class App {
 	}
 
 	async mailingStart() {
-		await serMail.test();
+		await serMail.sendMailToMatchedTeam();
+		await serMail.sendMailToUnmatchedTeam();
 	}
 }
 const app = new App();

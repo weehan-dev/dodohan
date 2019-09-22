@@ -4,7 +4,7 @@ const main = async (loaders, app) => {
 	try {
 		await loaders();
 		await app.injectStart();
-		await app.matching();
+		// await app.matching();
 		await app.mailingStart();
 		process.exit();
 	} catch (e) {
