@@ -2,6 +2,7 @@ const utilCsv = require("./utils/utilCsv");
 const serParticipant = require("./services/serParticipant");
 const serTeam = require("./services/serTeam");
 const serMail = require("./services/serMail");
+const serSms = require("./services/serSms");
 class App {
 	constructor() {
 		if (App.instance) return App.instance;
@@ -62,6 +63,9 @@ class App {
 
 	async mailingStart() {
 		await serMail.test()
+	}
+	async messageStart(){
+		await serSms.test()
 	}
 }
 const app = new App();
