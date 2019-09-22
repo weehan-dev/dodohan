@@ -1,86 +1,4 @@
-/* 
-DB에서 객체 가져오기 but 오류나서 하지 못함 
-*/
-
-// const Participant = require("../models/schema/participants.schema");
-// const Team = require("../models/schema/teams.schema");
-// var M3 = Team.find(
-//   { gender: "male", matchingType: 3 },
-//   {
-//     gender: false,
-//     school: false,
-//     preferAge: true,
-//     leader: true,
-//     matchingType: false,
-//     members: false,
-//     isMatched: false,
-//     partnerTeam: true,
-//     avgAge: false,
-//     teamPoint: true
-//   }
-// );
-
-// var F3 = Team.find(
-//   { gender: "female", matchingType: 3 },
-//   {
-//     gender: false,
-//     school: false,
-//     preferAge: true,
-//     leader: true,
-//     matchingType: false,
-//     members: false,
-//     isMatched: true,
-//     partnerTeam: true,
-//     avgAge: false,
-//     teamPoint: ture
-//   }
-// );
-
-/* 
-테스트 케이스 
-*/
-// var Male = [
-//   {
-//     kakaoId: "a",
-//     point: 20,
-//     prefer_age: [20, 21, 22],
-//     age: [20, 21]
-//   },
-//   {
-//     kakaoId: "b",
-//     point: 30,
-//     prefer_age: [24, 25],
-//     age: [24, 25]
-//   },
-//   {
-//     kakaoId: "c",
-//     point: 10,
-//     prefer_age: [20, 21, 22, 23, 24, 25],
-//     age: [26]
-//   }
-// ];
-
-// var Female = [
-//   {
-//     kakaoId: "d",
-//     point: 30,
-//     prefer_age: [20, 21],
-//     age: [20]
-//   },
-//   {
-//     kakaoId: "e",
-//     point: 10,
-//     prefer_age: [20, 21, 22, 23, 24, 25, 26],
-//     age: [23, 24, 25]
-//   },
-//   {
-//     kakaoId: "f",
-//     point: 20,
-//     prefer_age: [22, 23, 24, 25],
-//     members: [{age: 25, key: dsadasdad00}, {}]
-//     leader: {obkey, age}
-//   }
-// ];
+const modTeam = require("../models/modTeams");
 
 module.exports = {
 	//Point 값을 기준으로 오름차순 정렬
@@ -188,17 +106,21 @@ module.exports = {
 			//console.log("========");
 		}
 		return engaged;
+	},
+
+	// 테스트 코드
+	test: async () => {
+		await modTeam.makeTeamforMathcing("female");
+		await modTeam.makeTeamforMathcing("male");
 	}
 };
 
-// 일단 여기 썼으요
+// sortByPriority(Male);
+// sortByPriority(Female);
 
-sortByPriority(Male);
-sortByPriority(Female);
+// const malePrefer = setCandidate(Male, Female);
+// const femalePrefer = setCandidate(Female, Male);
 
-const malePrefer = setCandidate(Male, Female);
-const femalePrefer = setCandidate(Female, Male);
+// const matchingResult = match(malePrefer, femalePrefer);
 
-const matchingResult = match(malePrefer, femalePrefer);
-
-console.log(matchingResult);
+// console.log(matchingResult);

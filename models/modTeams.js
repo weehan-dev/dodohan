@@ -1,27 +1,63 @@
 const Team = require("./schema/teams.schema");
+const Participant = require("./schema/participants.schema");
 
 module.exports = {
 	makeTeam: async teamObj => {
 		const team = await Team.create(teamObj);
 		return team;
 	},
-	makeTeamforMathcing: async (teamObj, gender) => {
-		const { leader, members, preferAge, teamPoint } = team;
-		Team.find(
-			{ gender, matchingType: 3 },
+
+	makeTeamforMathcing: async gender => {
+		const getLeaderObj = await Team.aggregate([
 			{
-				gender: false,
-				school: false,
+				$lookup: {
+					from: "participants",
+					localField: "leader",
+					foreignField: "_id",
+					as: "leader"
+				}
+			}
+		]);
+		const getMembersObj = await Team.aggregate([
+			{ $unwind: "$members" },
+			{
+				$lookup: {
+					from: "participants",
+					localField: "members",
+					foreignField: "_id",
+					as: "getMembers"
+				}
+			},
+			{ $unwind: "$getMembers" },
+			{
+				$group: {
+					_id: "$_id",
+					getMembers: { $push: "$getMembers" }
+				}
+			}
+		]);
+
+		const getTeam = await Team.find(
+			{ matchingType: 3, gender },
+			{
 				preferAge: true,
 				leader: true,
-				matchingType: false,
-				members: false,
-				isMatched: false,
-				partnerTeam: false,
-				avgAge: false,
+				members: true,
 				teamPoint: true
 			}
-		).sort({ teamPoint: 1 }); //field: preferAge, leader
-		return team;
+		).sort({ teamPoint: 1 });
+
+		//console.log(getTeam[0]["members"][0]);
+		console.log(getMembersObj);
+		//return setTeam;
 	}
 };
+
+// 내가 원하는 데이터 형식
+
+// { _id: 5d8722922f114d1948208cd8,
+// 	preferAge: [ 22, 23 ],
+// 	members: [ [Object], [Ojbect] ]
+// 	gender: 'male',
+// 	teamPoint: 0,
+// 	leader: [ [Ojbect] ] }
