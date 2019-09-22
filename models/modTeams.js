@@ -50,9 +50,10 @@ module.exports = {
 
 	getMatchedTeamList: async () => {
 		const teamList = await Team.find({ isMatched: true })
-			.populate("leader")
+			.populate("leader", ["phoneNumber", "email"])
 			.populate({
 				path: "partnerTeam",
+				select: ["leader"],
 				populate: { path: "leader", select: "kakaoId" }
 			});
 
