@@ -23,11 +23,13 @@ module.exports = {
 		ID: process.env.GMAIL_ID,
 		PW: process.env.GMAIL_PW,
 		PROAL: process.env.NAVER_PROAL,
-        TEST1: process.env.NAVER_PROAL,
-        TEST2: process.env.TEST_EMAIL
+		TEST1: process.env.NAVER_PROAL,
+		TEST2: process.env.TEST_EMAIL
 	},
-	SMS_INFO:{
+	SMS_INFO: {
 		KEY: process.env.SOLAPI_API_KEY,
 		SECRET: process.env.SOLAPI_API_SECRET,
+		FROM: process.env.SOLAPI_PHONE_NUMBER,
+		TESTNUM: process.env.SOLAPI_TEST_NUM
 	}
 };
