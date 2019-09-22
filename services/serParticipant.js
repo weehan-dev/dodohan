@@ -2,6 +2,15 @@ const modParticipant = require("../models/modParticipant");
 const serMemberPoint = require("./serMemberPoint");
 const { createBaseMember } = require("../utils/utilTeam");
 
+const checkUserFbLink = async user => {
+	let ret;
+	ret = await modHdjLikes.checkUserLink(user.facebookLink);
+	if (ret) user.point++;
+	ret = await modWhLikes.checkUserLink(user.facebookLink);
+	if (ret) user.point++;
+	return;
+}
+
 module.exports = {
 	injectWeehanMembers: async rawForm => {
 		const { leader, mem1, mem2 } = createBaseMember(rawForm, "hanyang");
@@ -10,8 +19,12 @@ module.exports = {
 			await Promise.all(
 				users.map(user => modParticipant.checkDuplicated(user))
 			);
+			// await Promise.all(
+			// 	users.map(user => serMemberPoint.injectWeehanPoint(user))
+			// );
+
 			await Promise.all(
-				users.map(user => serMemberPoint.injectWeehanPoint(user))
+				users.map(user => checkUserFbLink(user))			
 			);
 
 			//TODO: ret 안에 생성된 유저들이 있어야 함 확인 못해봄
@@ -30,6 +43,15 @@ module.exports = {
 			await Promise.all(
 				users.map(user => modParticipant.checkDuplicated(user))
 			);
+
+			await Promise.all(
+				users.map(user => serPartic)
+			)
+			
+			await Promise.all(
+				users.map(user => checkUserFbLink(user))			
+			);
+
 			//TODO: ret 안에 생성된 유저들이 있어야 함 확인 못해봄
 			const ret = await Promise.all(
 				users.map(user => modParticipant.makeParticipant(user))
