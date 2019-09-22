@@ -5,8 +5,6 @@ const path =require('path');
 const htmlBase = fs.readFileSync(path.join(__dirname, './ddh.html'), 'utf8');
 
 const emailFunc = async (email,content,html) => {
-    console.log(config.EMAIL_INFO.ID);
-    console.log(config.EMAIL_INFO.PW);
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
