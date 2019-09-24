@@ -1,13 +1,18 @@
-require("dotenv").config();
-const path = require("path");
-const fs = require("fs");
+const loaders = require("./loaders");
+const app = require("./app");
+const main = async (loaders, app) => {
+	try {
+		await loaders();
 
-const db = require("./schema");
+		await app.injectStart();
+		await app.matching();
+		// await app.mailingStart();
+		// await app.messageStart();
+		process.exit();
+	} catch (e) {
+		console.error(e.message);
+		console.log("앱이 비정상 종료 되었습니다.");
+	}
+};
 
-db(process.env.MONGO_URL);
-const inject = require("./injectDb");
-
-(async function() {
-	await inject();
-	console.log("마침");
-})();
+main(loaders, app);
