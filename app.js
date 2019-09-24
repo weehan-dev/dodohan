@@ -4,12 +4,49 @@ const serTeam = require("./services/serTeam");
 const serMatching = require("./services/serMatching");
 const serMail = require("./services/serMail");
 const serSms = require("./services/serSms");
+const serInfo = require("./services/serInfo");
 
 class App {
 	constructor() {
 		if (App.instance) return App.instance;
 		App.instance = this;
 		return App.instance;
+	}
+
+	async smsLimited(offset) {
+		await serSms.messageLimited();
+	}
+
+	async rematch() {
+		const [male, female] = await serMatching.getRematchableTeam();
+		await serMatching.setCandidate(male, female);
+		await serMatching.setCandidate(female, male);
+		const maleList = await serMatching.makeListForRematching();
+		await serMatching.match(maleList);
+	}
+
+	async checkManInfo() {
+		const list = await serInfo.getMatchedMale();
+		const ulist = await serInfo.getUnmatchedMale();
+		console.log(
+			`
+			전체 팀: ${list.length + ulist.length}
+			매칭 된 남성 팀: ${list.length}
+			매칭 안 된 남성 팀: ${ulist.length}
+			`
+		);
+	}
+
+	async checkWomanInfo() {
+		const list = await serInfo.getMatchedFemale();
+		const ulist = await serInfo.getUnmatchedFemale();
+		console.log(
+			`
+			전체 팀: ${list.length + ulist.length}
+			매칭 된 여성 팀: ${list.length}
+			매칭 안 된 여성 팀: ${ulist.length}
+			`
+		);
 	}
 
 	async injectStart() {
@@ -63,23 +100,18 @@ class App {
 	}
 
 	async matching() {
-		const [male, female] = await serMatching.makeList();
-
-		const malePrefer = await serMatching.setCandidate(male, female);
-		const femalePrefer = await serMatching.setCandidate(female, male);
-
-		const matchingResult = await serMatching.match(
-			malePrefer,
-			femalePrefer
-		);
-		console.log(matchingResult);
+		const [male, female] = await serMatching.makeListForCandidates();
+		await serMatching.setCandidate(male, female);
+		await serMatching.setCandidate(female, male);
+		const maleList = await serMatching.makeListForMatching();
+		await serMatching.match(maleList);
 	}
 
 	async mailingStart() {
 		await serMail.sendMailToMatchedTeam();
 		await serMail.sendMailToUnmatchedTeam();
 	}
-	async messageStart(){
+	async messageStart() {
 		await serSms.sendMessageToMatchedTeam();
 		await serSms.sendMessageToUnmatchedTeam();
 	}

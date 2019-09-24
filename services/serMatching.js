@@ -1,149 +1,102 @@
 const modTeam = require("../models/modTeams");
 
 module.exports = {
-	//남녀 리스트 가져오기
-	makeList: async () => {
+	makeListForCandidates: async () => {
 		const maleList = await modTeam.makeTeamforMathcing("male");
 		const femaleList = await modTeam.makeTeamforMathcing("female");
-
-		maleList.forEach(male => {
-			var ages = [];
-			ages.push(male["members"][0]["age"]);
-			ages.push(male["members"][1]["age"]);
-			ages.push(male["leader"]["age"]);
-			male["ages"] = ages;
-		});
-		femaleList.forEach(male => {
-			var ages = [];
-			ages.push(male["members"][0]["age"]);
-			ages.push(male["members"][1]["age"]);
-			ages.push(male["leader"]["age"]);
-			male["ages"] = ages;
-		});
-		//console.log(maleList);
-		//console.log(femaleList);
-
 		return [maleList, femaleList];
 	},
 
-	//선호 나이대에 맞는 매칭 후보 맵핑
-	setCandidate: (x, y) => {
-		var people = [];
-
-		for (var i = 0; i < x.length; i++) {
-			var person = {};
-			var _id = x[i]["_id"];
-			var candidates = [];
-
-			for (var j = 0; j < y.length; j++) {
-				var tf = y[j]["ages"].every(element => {
-					return x[i]["preferAge"].includes(element);
-				});
-				if (tf) {
-					candidates.push(y[j]["_id"]);
-				}
-			}
-			person._id = _id;
-			person.candidates = candidates;
-			people.push(person);
-		}
-		return people;
+	makeListForMatching: async () => {
+		const maleList = await modTeam.getTeamListWithCandidates("male");
+		return maleList;
 	},
 
-	// 각 남녀의 선호 이성 리스트
-	findCandidates: (preferList, com) => {
-		for (key in preferList) {
-			if (preferList[key]["_id"] === com) {
-				var prefer = preferList[key]["candidates"];
-			}
-		}
-		return prefer;
-	},
+	setCandidate: async (x, y) => {
+		for (let team of x) {
+			const candidates = [];
+			for (let anotherTeam of y) {
+				const isCandidate = anotherTeam.ages.every(age =>
+					team.preferAge.includes(age)
+				);
 
-	// 여자와 이미 매칭된 남자 찾기
-	findcurrMan: map => {
-		if ([...map.entries()] == false) {
-			return null;
-		} else {
-			return [...map.entries()][0][0];
+				if (isCandidate) candidates.push(anotherTeam._id);
+			}
+			team.candidates = candidates;
+			//인덱스가 앞에 있을 수록 팀 포인트가 높다
+			await team.save();
 		}
 	},
 
 	/* 매칭 알고리즘 */
-	match: (malePrefer, femalePrefer) => {
-		const findCandidates = (preferList, com) => {
-			for (key in preferList) {
-				if (preferList[key]["_id"] === com) {
-					var prefer = preferList[key]["candidates"];
-				}
-			}
-			return prefer;
-		};
+	match: async maleList => {
+		const unmatchedMale = maleList;
+		const engaged = new Map(); //[[w, m]]의 map 형식
 
-		const findcurrMan = map => {
-			if ([...map.entries()] == false) {
-				return null;
-			} else {
-				return [...map.entries()][0][0];
-			}
-		};
+		while (unmatchedMale.length) {
+			const m = unmatchedMale.shift();
 
-		var engaged = new Map(); //[[man, woman]]의 map 형식
-		const notMatchedMale = malePrefer.map(obj => obj["_id"]);
+			const manCandidates = m.candidates;
+			const validateCandidates = manCandidates.filter(candi =>
+				candi.candidates.includes(m._id)
+			);
 
-		while (!(notMatchedMale == "")) {
-			var man = notMatchedMale.pop();
-			var manPreferList = findCandidates(malePrefer, man);
-
-			var woman = manPreferList.pop();
-			var womanPreferList = findCandidates(femalePrefer, woman);
-			if (woman == undefined) {
-				continue;
-			}
-
-			var findMap = new Map([...engaged].filter(([m, w]) => w === woman));
-			var currMan = findcurrMan(findMap);
-
-			if (!currMan) {
-				if (womanPreferList.includes(man)) {
-					engaged.set(man, woman);
-					// console.log(
-					// 	`${man}과 ${woman}이 매칭되었습니다. ${engaged}`
-					// );
-				} else {
-					if (manPreferList) {
-						notMatchedMale.push(man);
-					}
-				}
-			} else {
-				if (womanPreferList.includes(man)) {
-					if (womanPreferList.indexOf(currMan) > womanPreferList.indexOf(man)) {
-						engaged.set(man, woman);
-						var currManPreferList = findCandidates(malePrefer, currMan);
-						if (currManPreferList) {
-							notMatchedMale.push(currMan);
-						}
-					} else {
-						if (manPreferList) {
-							notMatchedMale.push(man);
-						}
+			let isMatched = false;
+			while (validateCandidates.length && !isMatched) {
+				w = validateCandidates.shift();
+				isSheEngaged = engaged.get(w);
+				if (isSheEngaged) {
+					if (
+						w.candidates.indexOf(m._id) < w.candidates.indexOf(isSheEngaged._id)
+					) {
+						// 더 우선 순위가 높음
+						// 약혼변경
+						engaged.set(w, m);
+						m.candidates = validateCandidates;
+						await m.save();
+						unmatchedMale.unshift(isSheEngaged);
+						isMatched = true;
 					}
 				} else {
-					if (manPreferList) {
-						notMatchedMale.push(man);
-						// console.log(
-						// 	`${man}이 ${currMan}이 있는 ${woman}한테 차이고 다시 대기`
-						// );
-					}
+					engaged.set(w, m);
+					m.candidates = validateCandidates;
+					await m.save();
+					isMatched = true;
 				}
 			}
 		}
+
+		for (var [w, m] of engaged.entries()) {
+			w.isMatched = true;
+			w.partnerTeam = m._id;
+			await w.save();
+
+			m.isMatched = true;
+			m.partnerTeam = w._id;
+			await m.save();
+		}
+
 		return engaged;
 	},
 
-	// 테스트 코드
-	test: async () => {
-		await modTeam.makeTeamforMathcing("female");
-		await modTeam.makeTeamforMathcing("male");
+	makeListForRematching: async () => {
+		const maleList = await modTeam.getRematchableTeamList("male");
+		return maleList;
+	},
+
+	getRematchableTeam: async () => {
+		const maleList = await modTeam.getRematchableTeamList("male");
+		const femaleList = await modTeam.getRematchableTeamList("female");
+		for (m of maleList) {
+			m.candidates = [];
+			await m.save();
+		}
+
+		for (f of femaleList) {
+			f.candidates = [];
+			await f.save();
+		}
+
+		return [maleList, femaleList];
 	}
 };

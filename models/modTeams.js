@@ -1,30 +1,38 @@
 const Team = require("./schema/teams.schema");
-const Participant = require("./schema/participants.schema");
 
 module.exports = {
+	getTeamById: async id => {
+		const team = await Team.find({ _id: id });
+		return team;
+	},
 	makeTeam: async teamObj => {
 		const team = await Team.create(teamObj);
 		return team;
 	},
 
-	makeTeamforMathcing: async gender => {
-		const getTeamObj = await Team.find(
-			{
-				matchingType: 3,
-				gender: gender
-			},
-			{
-				ages: true,
-				preferAge: true,
-				leader: true,
-				members: true,
-				teamPoint: true
-			}
-		)
-			.populate("leader", "age")
-			.populate("members", "age")
+	getTeamListSorted: async gender => {
+		const teamList = await Team.find({
+			gender
+		})
+			.select({ candidates: true, teamPoint: true })
 			.sort({ teamPoint: 1 });
-		return getTeamObj;
+		return teamList;
+	},
+
+	makeTeamforMathcing: async gender => {
+		const teamList = await Team.find({
+			gender
+		}).sort({ teamPoint: 1 });
+		return teamList;
+	},
+
+	getTeamListWithCandidates: async gender => {
+		const teamList = await Team.find({
+			gender
+		})
+			.populate("candidates")
+			.sort({ teamPoint: 1 });
+		return teamList;
 	},
 
 	getMatchedTeamList: async () => {
@@ -45,6 +53,34 @@ module.exports = {
 			"phoneNumber"
 		]);
 		return teamList;
+	},
+
+	getTeamByIsMatched: async (gender, isMatched) => {
+		const teamList = await Team.find({ gender, isMatched });
+		return teamList;
+	},
+
+	getRematchableTeamList: async gender => {
+		const teamList = await Team.find({ gender, isMatched: false })
+			.populate("candidates")
+			.sort({ teamPoint: 1 });
+		return teamList;
+	},
+	getListLimitedNum: async (offset, limit) => {
+		const list = await Team.find({})
+			.select({
+				isMatched: true,
+				leader: true,
+				partnerTeam: true,
+				isNotified: true
+			})
+			.populate("leader", "phoneNumber")
+			.populate({
+				path: "partnerTeam",
+				select: "leader",
+				populate: { path: "leader", select: "kakaoId" }
+			});
+		return list;
 	}
 };
 

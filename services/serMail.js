@@ -4,13 +4,17 @@ const modTeam = require("../models/modTeams");
 module.exports = {
 	sendMailToMatchedTeam: async () => {
 		const teamList = await modTeam.getMatchedTeamList();
-		await Promise.all(teamList.map(team => utilMail.matchingEmailSend(team)));
+		for (team of teamList) {
+			await utilMail.matchingEmailSend(team);
+		}
 		console.log("매칭된 사람들에게 이메일 완료");
 	},
 
 	sendMailToUnmatchedTeam: async () => {
 		const teamList = await modTeam.getUnmatchedTeamList();
-		await Promise.all(teamList.map(team => utilMail.unmatchingEmailSend(team)));
+		for (team of teamList) {
+			await utilMail.unmatchingEmailSend(team);
+		}
 		console.log("매칭 안된 사람들에게 이메일 완료");
 	}
 };

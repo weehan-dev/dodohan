@@ -50,7 +50,6 @@ const createBaseMember = (form, school) => {
 		mem1,
 		mem2
 	};
-
 	return ret;
 };
 

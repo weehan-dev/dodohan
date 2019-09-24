@@ -26,12 +26,9 @@ module.exports = {
 				age: prev.age + curr.age
 			}));
 
-		// TODO: 정수인지 체크 // 완료
 		const avgAge = Math.round(sumData.age / users.length);
 		const teamPoint = sumData.point;
-		const members = users
-			.filter(user => !user.isLeader)
-			.map(user => user._id);
+		const members = users.filter(user => !user.isLeader).map(user => user._id);
 		const leader = users.filter(user => user.isLeader)[0]._id;
 
 		const teamObj = {

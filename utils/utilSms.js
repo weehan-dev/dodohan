@@ -1,5 +1,6 @@
 const { config, Group } = require("coolsms-sdk-v4");
 const configApi = require("../config/index");
+const axios = require("axios").default;
 
 const matchSuccessSms = async (num, content) => {
 	// 인증을 위해 발급받은 본인의 API Key를 사용합니다.
@@ -16,7 +17,7 @@ const matchSuccessSms = async (num, content) => {
 	};
 
 	const params = {
-		text: `두근두근 라치오스 매칭에 성공하였습니다! 상대팀 대표의 카카오톡 아이디는 ${content}입니다`,
+		text: `[회신 금지]두근두근 라치오스 매칭 성공! 상대 대표 카카오톡 아이디: ${content}`,
 		type: "SMS", // 발송할 메시지 타입 (SMS, LMS, MMS, ATA, CTA)
 		to: num, // 수신번호 (받는이)
 		from: configApi.SMS_INFO.FROM // 발신번호 (보내는이)
@@ -42,12 +43,11 @@ const matchFailSms = async num => {
 	}
 
 	const params = {
-		text: `아쉽게도 성비 불균형으로 인해 두근두근 라치오스 매칭에 실패했습니다. 이번 이벤트에 관심 가져주셔서 감사합니다.`,
+		text: `[회신 금지]아쉽게도 이번 두근두근 라치오스 매칭에 실패했습니다.`,
 		type: "SMS", // 발송할 메시지 타입 (SMS, LMS, MMS, ATA, CTA)
 		to: num, // 수신번호 (받는이)
 		from: configApi.SMS_INFO.FROM // 발신번호 (보내는이)
 	};
-	console.log(params);
 	await send(params);
 };
 
@@ -68,9 +68,5 @@ module.exports = {
 		} catch (e) {
 			console.log(e.message);
 		}
-	},
-
-	test: async () => {
-		await matchSuccessSms(configApi.SMS_INFO.TESTNUM, "아무내용");
 	}
 };
