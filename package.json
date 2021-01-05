@@ -5,7 +5,7 @@
 	"author": "changhoi <0417kch@naver.com>",
 	"license": "MIT",
 	"dependencies": {
-		"axios": "^0.19.0",
+		"axios": "^0.21.1",
 		"commander": "^3.0.1",
 		"coolsms-sdk-v4": "^4.0.13",
 		"csv-parser": "^2.3.0",
