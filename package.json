@@ -33,6 +33,6 @@
 		"@types/sequelize": "^4.28.4",
 		"@types/tunnel-ssh": "^4.1.0",
 		"chai": "^4.2.0",
-		"mocha": "^6.2.0"
+		"mocha": "^10.2.0"
 	}
 }
